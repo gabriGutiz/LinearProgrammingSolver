@@ -1,0 +1,3 @@
+
+class LinProgProblemException(Exception):
+    pass
