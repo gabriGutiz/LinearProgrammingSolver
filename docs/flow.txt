@@ -1,0 +1,23 @@
+# Objective usage flow
+
+from LinProgSolver import *
+
+problem = LinProgProblem("ProblemName")
+
+problem.add_variable("VariableName", "VariableKey")
+problem.add_variable("VariableName", "VariableKey1")
+
+problem.add_obj_func(LinProg.MAX, "3*VariableKey + 4*VariableKey1")
+
+problem.add_constraint("ConstraintName", "VariableKey - VariableKey1 >= 1")
+problem.add_constraint("ConstraintName", "VariableKey + 3VariableKey1 <= 100")
+problem.add_constraint("ConstraintName", "3*VariableKey - VariableKey1 = 1")
+
+problem.extract_problem("FileName.ex")
+
+problem.solve()
+
+print(problem.solution)
+problem.extract_solution("FileName.ex")
+
+problem1 = LinProgProblem(from_file="FileName.ex")
