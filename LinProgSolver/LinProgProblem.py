@@ -23,7 +23,7 @@ class LinProgProblem:
         if file_name:
             self.__problem_from_file(file_name)
 
-    def add_variable(self, variable_name: str, variable_key: str) -> None:
+    def add_variable(self, variable_name: str, variable_key: str, variable_type: str) -> None:
         # add variable to problem
 
         if self.__is_variable_valid(variable_key):

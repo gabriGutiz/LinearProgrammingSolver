@@ -4,7 +4,7 @@ from LinProgSolver import *
 
 problem = LinProgProblem("ProblemName")
 
-problem.add_variable("VariableName", "VariableKey")
+problem.add_variable("VariableName", "VariableKey", LinProgTypes.Binary)
 problem.add_variable("VariableName", "VariableKey1")
 
 problem.add_obj_func(LinProg.MAX, "3*VariableKey + 4*VariableKey1")
