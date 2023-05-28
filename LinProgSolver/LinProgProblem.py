@@ -1,5 +1,5 @@
 
-from .utils.LinProgInterpreter import LinProgInterpreter
+from .LinProgInterpreter.LinProgInterpreter import LinProgInterpreter
 from .LinProgProblemException import LinProgProblemException
 
 class LinProgProblem:

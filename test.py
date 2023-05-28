@@ -1,9 +1,9 @@
 
 import sys
 
-sys.path.append('./LinProgSolver/utils')
+sys.path.append('./LinProgSolver/LinProgInterpreter')
 
-from LinProgInterpreter import Lexer
+from Lexer import Lexer
 
 def print_output(res: list) -> None:
     print('[')
