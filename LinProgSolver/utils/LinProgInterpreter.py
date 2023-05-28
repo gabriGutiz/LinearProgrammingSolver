@@ -7,8 +7,8 @@ import sys
 # from LinProgProblemException import LinProgProblemException
 
 class Type(Enum):
-    CONSTRAINT = 'constr'
-    OBJ_FUNC = 'obj'
+    CONSTRAINT = 'constr:'
+    OBJ_FUNC = 'obj:'
     SUM = '+'
     SUB = '-'
     DIV = '/'
@@ -23,7 +23,6 @@ class Type(Enum):
     EQUALS = '='
     BIGGER_EQ = '>='
     SMALLER_EQ = '<='
-    DEFINITION = ':'
     NUMERIC = 0
     IDENTIFIER = 1
 
@@ -53,7 +52,13 @@ class Lexer:
         self.size = len(inp)
 
     def __continue_searching(self, inp: str) -> bool:
-        return (inp.isalnum() or (inp in Token.search) or (not inp.endswith(' ')))
+        try:
+            test = Type(inp)
+            return True
+        except ValueError:
+            return (inp.isalnum() or
+                    (inp in Token.search) or
+                    (not inp.endswith(' ')))
 
     def lex(self) -> list():
         tokens = []
@@ -70,38 +75,30 @@ class Lexer:
             elif self.__continue_searching(val):
                 text = val
                 token = None
-                current_pos += 1
-                try:
-                    while current_pos < self.size and self.__continue_searching(text):
-                        if self.input[current_pos].isspace():
-                            break
-
-                        text += self.input[current_pos]
-
-                        for tpe in (Type):
-                            # print(tpe)
-                            if tpe == Type.NUMERIC or tpe == Type.IDENTIFIER:
-                                continue
-                            if text == tpe.value:
-                                token = tpe
-                                raise StopIteration()
-                        current_pos += 1
-
-                except StopIteration:
-                    pass
-                finally:
-                    if not token:
-                        if text.isnumeric():
-                            token = Type.NUMERIC
-                        else:
-                            token = Type.IDENTIFIER
-                    tokens.append(Token(token, text, token_pos))
+                while current_pos < self.size-1 and self.__continue_searching(text):
                     current_pos += 1
+                    if self.input[current_pos].isspace():
+                        break
+                    text += self.input[current_pos]
+
+                for tpe in (Type):
+                    if tpe == Type.NUMERIC or tpe == Type.IDENTIFIER:
+                        continue
+                    if text == tpe.value:
+                        token = tpe
+
+                if not token:
+                    if text.isnumeric():
+                        token = Type.NUMERIC
+                    else:
+                        token = Type.IDENTIFIER
+                tokens.append(Token(token, text, token_pos))
+                current_pos += 1
 
             else:
+                # TODO: USE LinProgProblemException
                 # raise LinProgProblemException(f"Unknown token {text} at {current_pos}")
-                print(f"Unknown token {text} at {current_pos}")
-                return []
+                raise ValueError(f"Unknown token {text} at {current_pos}")
         return tokens
 
 class LinProgInterpreter:
